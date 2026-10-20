@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Room Booking - Dream Stay Hotel</title>
+</head>
+
+<body bgcolor="lightyellow" align="center">
+
+    <h1>🏨 Dream Stay Hotel</h1>
+    <h2>Complete Your Room Booking</h2>
+
+    <a href="rooms.html"><b>⬅ Back to Rooms Price</b></a>
+
+    <hr>
+
+    <form oninput="total.value = price.value * days.value * rooms.value">
+
+        <h3>Selected Room</h3>
+
+        <select id="room" name="room" onchange="updatePrice()">
+            <option value="standard">Standard Room - ₹2,000/night</option>
+            <option value="deluxe">Deluxe Room - ₹3,500/night</option>
+            <option value="luxury">Luxury Suite - ₹5,000/night</option>
+        </select>
+
+        <br><br>
+
+        <label>Number of Days:</label><br>
+        <input type="number" id="days" name="days"
+               min="1" value="1" required>
+
+        <br><br>
+
+        <label>Number of Persons:</label><br>
+        <input type="number" id="persons" name="persons"
+               min="1" value="1" required>
+
+        <br><br>
+
+        <label>Number of Rooms Required:</label><br>
+        <input type="number" id="rooms" name="rooms"
+               min="1" value="1" required>
+
+        <input type="hidden" id="price" value="2000">
+
+        <br><br>
+
+        <h3>Total Price: ₹<output name="total">2000</output></h3>
+
+        <button type="button" onclick="confirmBooking()">
+            Confirm Booking
+        </button>
+
+    </form>
+
+    <p id="message"></p>
+
+    <script>
+        var params = new URLSearchParams(window.location.search);
+        var selectedRoom = params.get("room");
+
+        if (selectedRoom) {
+            document.getElementById("room").value = selectedRoom;
+        }
+
+        updatePrice();
+
+        function updatePrice() {
+            var room = document.getElementById("room").value;
+            var price = 2000;
+
+            if (room == "deluxe") {
+                price = 3500;
+            }
+            else if (room == "luxury") {
+                price = 5000;
+            }
+
+            document.getElementById("price").value = price;
+
+            var days = Number(document.getElementById("days").value);
+            var rooms = Number(document.getElementById("rooms").value);
+
+            document.querySelector("output").value =
+                price * days * rooms;
+        }
+
+        function confirmBooking() {
+            var days = Number(document.getElementById("days").value);
+            var persons = Number(document.getElementById("persons").value);
+            var rooms = Number(document.getElementById("rooms").value);
+            var total = Number(document.querySelector("output").value);
+            var room = document.getElementById("room");
+
+            if (days < 1 || persons < 1 || rooms < 1 ||
+                !Number.isInteger(days) ||
+                !Number.isInteger(persons) ||
+                !Number.isInteger(rooms)) {
+                alert("Please enter valid numbers.");
+                return;
+            }
+
+            document.getElementById("message").innerHTML =
+                "<h2>Booking Details</h2>" +
+                "Room: " + room.options[room.selectedIndex].text +
+                "<br>Days: " + days +
+                "<br>Persons: " + persons +
+                "<br>Rooms: " + rooms +
+                "<br>Total Price: ₹" + total +
+                "<br><br><b>Your booking details are ready!</b>";
+        }
+    </script>
+
+<br>
+    <a href="roomimage.html"><b>⬅ Previous Page (Image)</b></a>
+
+
+
+</body>
+</html>
